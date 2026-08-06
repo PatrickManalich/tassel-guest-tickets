@@ -13,6 +13,8 @@ function App() {
         allotment={guestTickets.allotment}
         guests={guestTickets.guests}
         addGuest={guestTickets.addGuest}
+        reassignGuest={guestTickets.reassignGuest}
+        removeGuest={guestTickets.removeGuest}
       />
 
       <DemoControlsPanel

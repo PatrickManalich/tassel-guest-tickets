@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { GuestInfoBlock } from "@/components/guest-tickets/guest-info-block"
 import { InlineFormError } from "@/components/guest-tickets/inline-form-error"
 
 export interface GuestFormValues {
@@ -26,6 +27,8 @@ interface GuestFormDialogProps {
   onSubmit: (values: GuestFormValues) => Promise<void>
   errorTitle: string
   errorDescription?: string
+  /** Reassign only: the guest currently holding this ticket, shown read-only above the fields. */
+  currentGuest?: { name: string; email: string | null }
 }
 
 // Pragmatic check, not a full RFC 5322 implementation — that tends to reject
@@ -45,6 +48,7 @@ export function GuestFormDialog({
   onSubmit,
   errorTitle,
   errorDescription,
+  currentGuest,
 }: GuestFormDialogProps) {
   const nameId = useId()
   const emailId = useId()
@@ -99,6 +103,8 @@ export function GuestFormDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-2 space-y-4">
+          {currentGuest ? <GuestInfoBlock guest={currentGuest} /> : null}
+
           <div className="space-y-1.5">
             <Label htmlFor={nameId}>
               Name <span className="text-destructive">*</span>
