@@ -33,12 +33,12 @@ export function ManageGuestTicketsScreen({
   const [removingGuest, setRemovingGuest] = useState<Guest | null>(null)
 
   return (
-    <div className="flex min-h-svh flex-col bg-muted/40">
-      <header className="sticky top-0 z-30 border-b border-border bg-background px-4 py-4">
+    <div className="flex min-h-svh flex-col bg-page-background">
+      <header className="sticky top-0 z-30 border-b border-hairline bg-background px-4 py-4">
         <h1 className="text-lg font-semibold text-foreground">Manage guest tickets</h1>
       </header>
 
-      <main className="flex-1 space-y-4 p-4">
+      <main className="flex-1 space-y-5 p-4">
         {loading ? (
           <GuestTicketsSkeleton />
         ) : (

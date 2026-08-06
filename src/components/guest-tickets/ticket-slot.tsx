@@ -10,9 +10,9 @@ export function TicketSlot({ filled, onAddGuest }: TicketSlotProps) {
     return (
       <div
         aria-hidden="true"
-        className="flex size-11 shrink-0 items-center justify-center rounded-full bg-foreground text-background"
+        className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand text-white"
       >
-        <Check className="size-5" />
+        <Check className="size-5" strokeWidth={2} />
       </div>
     )
   }
@@ -22,9 +22,9 @@ export function TicketSlot({ filled, onAddGuest }: TicketSlotProps) {
       type="button"
       onClick={onAddGuest}
       aria-label="Add guest to open ticket"
-      className="flex size-11 shrink-0 items-center justify-center rounded-full border-2 border-foreground text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+      className="flex size-11 shrink-0 items-center justify-center rounded-full border border-hairline-interactive text-hairline-interactive transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
     >
-      <Plus className="size-5" />
+      <Plus className="size-5" strokeWidth={1.5} />
     </button>
   )
 }

@@ -22,13 +22,13 @@ export function TicketAllotmentCard({ claimed, total, onAddGuest }: TicketAllotm
   return (
     <section
       aria-label="Your guest tickets"
-      className="rounded-xl border border-border bg-card p-4 shadow-sm"
+      className="rounded-xl border border-hairline bg-card p-5"
     >
       <h2 className="text-base font-semibold text-foreground">Your guest tickets</h2>
       <p className="mt-0.5 text-sm text-muted-foreground" aria-live="polite">
         {allotmentHeadline(claimed, total)}
       </p>
-      <div role="group" aria-label={groupLabel} className="mt-3 flex gap-2">
+      <div role="group" aria-label={groupLabel} className="mt-4 flex justify-between">
         {Array.from({ length: total }, (_, index) => (
           <TicketSlot key={index} filled={index < claimed} onAddGuest={onAddGuest} />
         ))}

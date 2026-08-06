@@ -8,6 +8,10 @@
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: 'Geist Variable', sans-serif;
+    --color-page-background: var(--page-background);
+    --color-hairline: var(--hairline);
+    --color-hairline-interactive: var(--hairline-interactive);
+    --color-brand: var(--brand);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,6 +53,20 @@
 }
 
 :root {
+    /* Tassel brand tokens: warm off-white page background (matches Tassel's
+       own product screenshots), a single hairline color reused everywhere a
+       subtle *decorative* line is needed (header/footer border, card
+       borders) so the page doesn't accumulate several different grays, and
+       the brand accent orange. Lighter than a strict ~3:1 read against the
+       page (plain #FFFFFF-on-#f5f3ef is ~1.1:1, too faint to rely on alone)
+       — a deliberate legibility-over-invisibility tradeoff, not a
+       compliance target. --hairline-interactive is a deliberately darker
+       step of the same hue, for the open-slot buttons specifically — at
+       plain --hairline they read as disabled rather than tappable. */
+    --page-background: #f5f3ef;
+    --hairline: #ddd6c8;
+    --hairline-interactive: #b5ad9e;
+    --brand: #f35930;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);

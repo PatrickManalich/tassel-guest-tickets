@@ -6,7 +6,7 @@ function App() {
   const guestTickets = useGuestTickets()
 
   return (
-    <div className="min-h-svh bg-muted/30">
+    <div className="min-h-svh">
       <ManageGuestTicketsScreen
         loading={guestTickets.loading}
         ceremony={guestTickets.ceremony}

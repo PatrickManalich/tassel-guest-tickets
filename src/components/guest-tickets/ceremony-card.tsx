@@ -33,7 +33,7 @@ export function CeremonyCard({ ceremony }: CeremonyCardProps) {
   return (
     <section
       aria-label="Ceremony details"
-      className="rounded-xl border border-border bg-card p-4 shadow-sm"
+      className="rounded-xl border border-hairline bg-card p-5"
     >
       <h2 className="text-base font-semibold text-foreground">{ceremony.name}</h2>
       <p className="mt-0.5 text-sm text-muted-foreground">{ceremony.school}</p>

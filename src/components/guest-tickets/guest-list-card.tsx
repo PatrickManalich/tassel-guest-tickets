@@ -13,7 +13,7 @@ export function GuestListCard({ guests, total, onReassign, onRemove }: GuestList
   return (
     <section
       aria-label="Your guests"
-      className="rounded-xl border border-border bg-card p-4 shadow-sm"
+      className="rounded-xl border border-hairline bg-card p-5"
     >
       <h2 className="text-base font-semibold text-foreground">Your guests</h2>
       {guests.length === 0 ? (
@@ -26,7 +26,7 @@ export function GuestListCard({ guests, total, onReassign, onRemove }: GuestList
           </p>
         </div>
       ) : (
-        <ul className="mt-2 divide-y divide-border">
+        <ul className="mt-2">
           {guests.map((guest) => (
             <GuestRow key={guest.id} guest={guest} onReassign={onReassign} onRemove={onRemove} />
           ))}

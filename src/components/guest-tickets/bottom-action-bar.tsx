@@ -9,7 +9,7 @@ interface BottomActionBarProps {
 
 export function BottomActionBar({ disabled, total, onAddGuest }: BottomActionBarProps) {
   return (
-    <div className="sticky bottom-0 z-30 border-t border-border bg-background p-4">
+    <div className="sticky bottom-0 z-30 border-t border-hairline bg-background p-4">
       <Button
         type="button"
         className="h-11 w-full text-base"
