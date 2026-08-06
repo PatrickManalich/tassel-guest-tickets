@@ -27,7 +27,7 @@ export function ManageGuestTicketsScreen({
 
   return (
     <div className="flex min-h-svh flex-col bg-muted/40">
-      <header className="border-b border-border bg-background px-4 py-4">
+      <header className="sticky top-0 z-30 border-b border-border bg-background px-4 py-4">
         <h1 className="text-lg font-semibold text-foreground">Manage guest tickets</h1>
       </header>
 
