@@ -11,7 +11,6 @@ export interface GuestInput {
 
 const INITIAL_LOAD_DELAY_MS = 700
 const ACTION_DELAY_MS = 600
-export const SAVE_FAILURE_MESSAGE = "We couldn't save your guest."
 
 function delay(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms))
@@ -58,7 +57,10 @@ export function useGuestTickets(): UseGuestTicketsResult {
     if (armedRef.current) {
       armedRef.current = false
       setNextActionArmedToFail(false)
-      throw new Error(SAVE_FAILURE_MESSAGE)
+      // The message here is for devtools only — callers supply their own
+      // user-facing copy (e.g. GuestFormDialog's errorTitle/errorDescription
+      // props) rather than reading this string.
+      throw new Error("Simulated save failure")
     }
     mutate()
   }, [])

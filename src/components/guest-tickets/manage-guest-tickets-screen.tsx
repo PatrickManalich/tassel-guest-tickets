@@ -1,8 +1,11 @@
+import { useState } from "react"
 import { BottomActionBar } from "@/components/guest-tickets/bottom-action-bar"
 import { CeremonyCard } from "@/components/guest-tickets/ceremony-card"
+import { GuestFormDialog } from "@/components/guest-tickets/guest-form-dialog"
 import { GuestListCard } from "@/components/guest-tickets/guest-list-card"
 import { GuestTicketsSkeleton } from "@/components/guest-tickets/guest-tickets-skeleton"
 import { TicketAllotmentCard } from "@/components/guest-tickets/ticket-allotment-card"
+import type { GuestInput } from "@/hooks/use-guest-tickets"
 import type { Allotment, Ceremony, Guest } from "@/types/guest-tickets"
 
 interface ManageGuestTicketsScreenProps {
@@ -10,6 +13,7 @@ interface ManageGuestTicketsScreenProps {
   ceremony: Ceremony
   allotment: Allotment
   guests: Guest[]
+  addGuest: (input: GuestInput) => Promise<void>
 }
 
 export function ManageGuestTicketsScreen({
@@ -17,7 +21,10 @@ export function ManageGuestTicketsScreen({
   ceremony,
   allotment,
   guests,
+  addGuest,
 }: ManageGuestTicketsScreenProps) {
+  const [isAddDialogOpen, setAddDialogOpen] = useState(false)
+
   return (
     <div className="flex min-h-svh flex-col bg-muted/40">
       <header className="border-b border-border bg-background px-4 py-4">
@@ -33,7 +40,7 @@ export function ManageGuestTicketsScreen({
             <TicketAllotmentCard
               claimed={allotment.claimed}
               total={allotment.total}
-              onAddGuest={() => {}}
+              onAddGuest={() => setAddDialogOpen(true)}
             />
             <GuestListCard
               guests={guests}
@@ -49,9 +56,20 @@ export function ManageGuestTicketsScreen({
         <BottomActionBar
           disabled={allotment.claimed === allotment.total}
           total={allotment.total}
-          onAddGuest={() => {}}
+          onAddGuest={() => setAddDialogOpen(true)}
         />
       )}
+
+      <GuestFormDialog
+        open={isAddDialogOpen}
+        onOpenChange={setAddDialogOpen}
+        title="Add guest"
+        description="Enter the guest's name and optional email address to assign a ticket."
+        submitLabel="Save"
+        onSubmit={addGuest}
+        errorTitle="We couldn't save your guest."
+        errorDescription="Please try again."
+      />
     </div>
   )
 }

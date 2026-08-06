@@ -12,6 +12,7 @@ function App() {
         ceremony={guestTickets.ceremony}
         allotment={guestTickets.allotment}
         guests={guestTickets.guests}
+        addGuest={guestTickets.addGuest}
       />
 
       <DemoControlsPanel
