@@ -21,7 +21,7 @@ export function BottomActionBar({ disabled, total, onAddGuest }: BottomActionBar
       </Button>
       {disabled ? (
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          All {total} tickets have been claimed.
+          All {total} tickets have been claimed
         </p>
       ) : null}
     </div>

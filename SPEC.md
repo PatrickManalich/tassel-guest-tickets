@@ -35,6 +35,7 @@ interface Ceremony { school: string; name: string; date: string; venue: string }
 interface Allotment { total: number; claimed: number }
 interface Guest { id: string; name: string; email: string | null }
 ```
+`claimed` matches the field name in the source `mock-data.json`, and the UI's display copy uses the same word (see Allotment display below) — no split between the data contract and front-end wording.
 
 ## Screen states
 - Loading — initial fetch
@@ -50,7 +51,7 @@ fail (inline error stays inside the dialog, entered data kept, Save re-enabled f
 - claimed/total shown as clickable slot circles
 - filled slot = checkmark (not independently clickable)
 - open slot = plus icon, clickable, opens Add dialog
-- copy is "X of Y claimed", matching the brief's own phrasing, not "assigned"
+- copy is "X of Y claimed", matching the brief's own phrasing — active/reflexive sense, the grad claims their own tickets. "Reassign" stays a separate word for a separate action and was never required to match the status terminology
 
 ## Layout
 - White toolbar, page title "Manage guest tickets", no back button (screen is scoped as if embedded in a larger app — state this assumption in the write-up)

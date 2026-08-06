@@ -64,7 +64,7 @@ export function ManageGuestTicketsScreen({
         open={isAddDialogOpen}
         onOpenChange={setAddDialogOpen}
         title="Add guest"
-        description="Enter the guest's name and optional email address to assign a ticket."
+        description="Enter the guest's name and optional email address to claim a ticket."
         submitLabel="Save"
         onSubmit={addGuest}
         errorTitle="We couldn't save your guest."
