@@ -106,8 +106,8 @@ export function GuestFormDialog({
           {currentGuest ? <GuestInfoBlock guest={currentGuest} /> : null}
 
           <div className="space-y-1.5">
-            <Label htmlFor={nameId}>
-              Name <span className="text-destructive">*</span>
+            <Label htmlFor={nameId} className="gap-0">
+              Name<span className="ml-0.5 text-destructive">*</span>
             </Label>
             <Input
               id={nameId}

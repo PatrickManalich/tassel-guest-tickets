@@ -28,7 +28,7 @@ export function TicketAllotmentCard({ claimed, total, onAddGuest }: TicketAllotm
       <p className="mt-0.5 text-sm text-muted-foreground" aria-live="polite">
         {allotmentHeadline(claimed, total)}
       </p>
-      <div role="group" aria-label={groupLabel} className="mt-4 flex justify-between">
+      <div role="group" aria-label={groupLabel} className="mt-4 flex max-w-xs justify-between">
         {Array.from({ length: total }, (_, index) => (
           <TicketSlot key={index} filled={index < claimed} onAddGuest={onAddGuest} />
         ))}
