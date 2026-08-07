@@ -1,32 +1,39 @@
-# React + TypeScript + Vite
+# Manage guest tickets
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A mobile-first, accessible screen for a graduate to manage their
+ceremony guest ticket allotment, built as a take-home exercise for
+Tassel.
 
-Currently, two official plugins are available:
+**Live:** https://tassel-guest-tickets.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run locally
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Stack
+
+Vite + React + TypeScript, Tailwind, shadcn/ui (Dialog, AlertDialog,
+Button, Input, Label, Badge, Alert). No backend, all data is mocked
+and async is simulated with fake latency.
+
+## Seeing all the states
+
+The app loads with 2 of 5 tickets claimed, matching the ceremony's
+starter data. The other states are a couple of clicks away rather
+than separate builds:
+
+- **Empty** — remove both seeded guests
+- **Full** — add three more guests
+- **Save error** — click the small tool icon in the bottom-left
+  corner (review tooling, not part of the product), arm "Simulate a
+  save error," then attempt any add, reassign, or remove. The next
+  attempt fails with an inline error and keeps whatever you typed;
+  retrying succeeds.
+
+## Write-up
+
+Key decisions, accessibility approach, and AI usage notes are in
+[WRITEUP.md](./WRITEUP.md).
