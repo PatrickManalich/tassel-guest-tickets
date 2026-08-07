@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { GuestInfoBlock } from "@/components/guest-tickets/guest-info-block"
 import { InlineFormError } from "@/components/guest-tickets/inline-form-error"
+import { useVisualViewportMetrics } from "@/hooks/use-visual-viewport-metrics"
 
 export interface GuestFormValues {
   name: string
@@ -63,6 +64,27 @@ export function GuestFormDialog({
   const emailId = useId()
   const emailErrorId = useId()
 
+  // max-h-[85dvh] + interactive-widget=resizes-content weren't enough on an
+  // actual device with the keyboard genuinely open (confirmed: Save/Cancel
+  // pushed off-screen below the keyboard). VisualViewport reports the real
+  // visible height directly. This computes the *same* centered position as
+  // the default top-1/2/-translate-y-1/2 classes when the keyboard is
+  // closed (offsetTop≈0, height≈full viewport), and correctly follows the
+  // shrunk visible area when it's open — no "is the keyboard open" guessing
+  // needed, it's always derived from the true visible viewport.
+  // Only `top` needs overriding here — the dialog's own base classes
+  // (`left-1/2 -translate-x-1/2 -translate-y-1/2`) already center it via
+  // Tailwind v4's standalone `translate` CSS property. Setting `transform`
+  // here too would stack a second -50%/-50% shift on top of that (`translate`
+  // and `transform` compose independently per the CSS Transforms spec rather
+  // than one overriding the other), doubling the offset and pushing the
+  // dialog off-screen — confirmed on device, not a theoretical concern.
+  const { height: viewportHeight, offsetTop: viewportOffsetTop } = useVisualViewportMetrics()
+  const dialogStyle = {
+    top: viewportOffsetTop + viewportHeight / 2,
+    maxHeight: Math.max(viewportHeight - 32, 200),
+  }
+
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [emailTouched, setEmailTouched] = useState(false)
@@ -82,6 +104,19 @@ export function GuestFormDialog({
       setHasError(false)
     }
   }, [open])
+
+  // Safety net alongside the positioning fix above: when the visible
+  // viewport height changes while the dialog is open (keyboard opening,
+  // closing, or being swapped for another), make sure whatever's currently
+  // focused is actually scrolled into view within the dialog's own
+  // scrollable area, not just trusting the resize alone to keep it visible.
+  useEffect(() => {
+    if (!open) return
+    const active = document.activeElement
+    if (active instanceof HTMLElement) {
+      active.scrollIntoView({ block: "nearest" })
+    }
+  }, [open, viewportHeight])
 
   const emailValid = isEmailValid(email)
   const showEmailError = (emailTouched || submitAttempted) && !emailValid
@@ -107,6 +142,7 @@ export function GuestFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="max-h-[85dvh] overflow-y-auto sm:max-w-sm"
+        style={dialogStyle}
         onCloseAutoFocus={onCloseAutoFocus}
       >
         <DialogHeader>

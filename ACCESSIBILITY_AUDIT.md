@@ -212,20 +212,40 @@ Both re-measured after the fix: **44×44 confirmed.**
 
 ## Keyboard-open case
 
-Capped the Add/Reassign dialog at `max-h-[85dvh] overflow-y-auto` (done
-during the build, not retrofitted here), and added
-`interactive-widget=resizes-content` to the viewport meta tag in an earlier
-pass specifically for this. I flagged then, and I'm flagging again now,
-because it's still true: **this cannot be verified from this environment.**
-No real device, and a desktop-browser resize does not reproduce actual
-on-screen-keyboard behavior (iOS Safari in particular has a history of
-resolving `position: fixed` percentage offsets against the pre-keyboard
-layout viewport even when `dvh` sizing is respected, which the meta tag
-addresses but doesn't guarantee across every iOS/Android version).
+### 🔧 Found (on an actual phone) and fixed: `dvh` + `interactive-widget` was not enough
 
-**Verdict: needs an actual phone.** Open the Add dialog, focus the Email
-field, and confirm Save stays reachable via scroll-within-the-dialog rather
-than getting stranded above/behind the keyboard.
+This item was flagged as unverified from this environment when this audit
+was first written — correctly, as it turned out. Tested on an actual
+device: Save was squeezed flush against the top of the keyboard with no
+margin, and Cancel (the second stacked button) was pushed completely
+off-screen underneath it, unreachable without dismissing the keyboard
+first. The `max-h-[85dvh] overflow-y-auto` cap and the
+`interactive-widget=resizes-content` viewport meta tag — both added
+specifically for this — were not sufficient on their own.
+
+**Fix:** `GuestFormDialog` (Add/Reassign — the only two dialogs with real
+text inputs, so the only two that can summon a keyboard; confirmed Remove
+has none and was never affected) now positions itself from the
+[VisualViewport API](https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport)
+(`src/hooks/use-visual-viewport-metrics.ts`) instead of trusting `dvh`
+CSS-unit behavior to be correct on any given browser/OS combination. `top`
+and `maxHeight` are derived directly from `window.visualViewport`'s actual
+reported visible height/offset — this produces the same centered position
+as the original CSS classes when the keyboard is closed, and correctly
+follows the shrunk visible area when it's open, with no "is the keyboard
+open" heuristic guessing involved. Paired with a scroll-into-view safety
+net that re-centers whatever field currently has focus within the dialog's
+own scroll container whenever the visible height changes.
+
+**Verdict: fixed, but re-verification on an actual phone with the keyboard
+genuinely open is still required** — this is exactly the class of bug that
+doesn't show up in this environment (no device, and a resized desktop
+browser doesn't reproduce real on-screen-keyboard behavior, which is
+literally how this got missed the first time). I'm confident in the
+reasoning — VisualViewport is broadly supported and reports ground truth
+rather than relying on CSS features a specific browser may or may not
+honor — but "confident in the reasoning" is not the same as "confirmed,"
+and this item has already proven that gap matters once.
 
 ---
 
