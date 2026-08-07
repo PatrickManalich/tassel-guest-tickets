@@ -86,8 +86,13 @@ function DialogContent({
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
+      // pr-14 reserves space for the absolutely-positioned close button
+      // (right-2 offset + size-11 width = 52px from the dialog's edge) so
+      // longer titles wrap before reaching it instead of running underneath —
+      // confirmed via measured bounding rects that they genuinely overlapped
+      // before this, not just a theoretical concern.
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-2", className)}
+      className={cn("flex flex-col gap-2 pr-14", className)}
       {...props}
     />
   )
