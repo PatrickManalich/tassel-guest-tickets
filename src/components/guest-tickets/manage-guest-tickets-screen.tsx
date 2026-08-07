@@ -38,11 +38,11 @@ export function ManageGuestTicketsScreen({
         <h1 className="text-lg font-semibold text-foreground">Manage guest tickets</h1>
       </header>
 
-      <main className="flex-1 space-y-5 p-4">
+      <main className="flex-1 p-4">
         {loading ? (
           <GuestTicketsSkeleton />
         ) : (
-          <>
+          <div className="animate-in fade-in space-y-5 duration-200 ease-out">
             <CeremonyCard ceremony={ceremony} />
             <TicketAllotmentCard
               claimed={allotment.claimed}
@@ -55,7 +55,7 @@ export function ManageGuestTicketsScreen({
               onReassign={setReassigningGuest}
               onRemove={setRemovingGuest}
             />
-          </>
+          </div>
         )}
       </main>
 
