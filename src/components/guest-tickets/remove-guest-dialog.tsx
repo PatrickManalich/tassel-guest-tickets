@@ -17,9 +17,16 @@ interface RemoveGuestDialogProps {
   guest: Guest | null
   onOpenChange: (open: boolean) => void
   onConfirm: () => Promise<void>
+  /** See the same prop on GuestFormDialog — this dialog has no <AlertDialogTrigger> either. */
+  onCloseAutoFocus?: (event: Event) => void
 }
 
-export function RemoveGuestDialog({ guest, onOpenChange, onConfirm }: RemoveGuestDialogProps) {
+export function RemoveGuestDialog({
+  guest,
+  onOpenChange,
+  onConfirm,
+  onCloseAutoFocus,
+}: RemoveGuestDialogProps) {
   const [submitting, setSubmitting] = useState(false)
   const [hasError, setHasError] = useState(false)
 
@@ -49,7 +56,10 @@ export function RemoveGuestDialog({ guest, onOpenChange, onConfirm }: RemoveGues
 
   return (
     <AlertDialog open={guest !== null} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="max-h-[85dvh] overflow-y-auto sm:max-w-sm">
+      <AlertDialogContent
+        className="max-h-[85dvh] overflow-y-auto sm:max-w-sm"
+        onCloseAutoFocus={onCloseAutoFocus}
+      >
         <AlertDialogHeader className="place-items-start text-left">
           <AlertDialogTitle>Remove guest?</AlertDialogTitle>
           <AlertDialogDescription className="sr-only">

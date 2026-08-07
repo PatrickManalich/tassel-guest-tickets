@@ -29,6 +29,14 @@ interface GuestFormDialogProps {
   errorDescription?: string
   /** Reassign only: the guest currently holding this ticket, shown read-only above the fields. */
   currentGuest?: { name: string; email: string | null }
+  /**
+   * Forwarded to Radix's DialogContent. This dialog is fully controlled with
+   * no <DialogTrigger>, and Radix's own "return focus to trigger" default
+   * only works with an actual DialogTrigger — verified empirically that
+   * without it, focus falls back to <body> on close. Callers are expected
+   * to capture the trigger element and refocus it here.
+   */
+  onCloseAutoFocus?: (event: Event) => void
 }
 
 // Pragmatic check, not a full RFC 5322 implementation — that tends to reject
@@ -49,6 +57,7 @@ export function GuestFormDialog({
   errorTitle,
   errorDescription,
   currentGuest,
+  onCloseAutoFocus,
 }: GuestFormDialogProps) {
   const nameId = useId()
   const emailId = useId()
@@ -96,7 +105,10 @@ export function GuestFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[85dvh] overflow-y-auto sm:max-w-sm">
+      <DialogContent
+        className="max-h-[85dvh] overflow-y-auto sm:max-w-sm"
+        onCloseAutoFocus={onCloseAutoFocus}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription className="sr-only">{description}</DialogDescription>
@@ -111,6 +123,7 @@ export function GuestFormDialog({
             </Label>
             <Input
               id={nameId}
+              className="h-11"
               value={name}
               onChange={(event) => setName(event.target.value)}
               placeholder="Enter first and last name"
@@ -123,6 +136,7 @@ export function GuestFormDialog({
             <Label htmlFor={emailId}>Email</Label>
             <Input
               id={emailId}
+              className="h-11"
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}

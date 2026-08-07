@@ -62,10 +62,13 @@
        — a deliberate legibility-over-invisibility tradeoff, not a
        compliance target. --hairline-interactive is a deliberately darker
        step of the same hue, for the open-slot buttons specifically — at
-       plain --hairline they read as disabled rather than tappable. */
+       plain --hairline they read as disabled rather than tappable, and
+       unlike the decorative hairline this one IS held to the 3:1 non-text
+       UI-component threshold since it's an interactive control (verified
+       ~3.5:1 against white). */
     --page-background: #f5f3ef;
     --hairline: #ddd6c8;
-    --hairline-interactive: #b5ad9e;
+    --hairline-interactive: #948873;
     --brand: #f35930;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
