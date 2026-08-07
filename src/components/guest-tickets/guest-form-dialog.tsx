@@ -1,5 +1,7 @@
 import { useEffect, useId, useState, type FormEvent } from "react"
+import { Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
   Dialog,
   DialogContent,
@@ -63,6 +65,7 @@ export function GuestFormDialog({
   const nameId = useId()
   const emailId = useId()
   const emailErrorId = useId()
+  const emailHintId = useId()
 
   // max-h-[85dvh] + interactive-widget=resizes-content weren't enough on an
   // actual device with the keyboard genuinely open (confirmed: Save/Cancel
@@ -179,13 +182,19 @@ export function GuestFormDialog({
               onBlur={() => setEmailTouched(true)}
               placeholder="Enter email address"
               aria-invalid={showEmailError}
-              aria-describedby={showEmailError ? emailErrorId : undefined}
+              aria-describedby={showEmailError ? `${emailErrorId} ${emailHintId}` : emailHintId}
             />
             {showEmailError ? (
               <p id={emailErrorId} className="text-sm text-destructive">
                 Enter a valid email address.
               </p>
             ) : null}
+            <Alert variant="info" role="note" className="py-1.5">
+              <Info aria-hidden="true" />
+              <AlertDescription id={emailHintId}>
+                If provided, we'll email the guest their ticket and instructions.
+              </AlertDescription>
+            </Alert>
           </div>
 
           {hasError ? (
