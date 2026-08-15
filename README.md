@@ -16,8 +16,8 @@ npm run dev
 ## Stack
 
 Vite + React + TypeScript, Tailwind, shadcn/ui (Dialog, AlertDialog,
-Button, Input, Label, Badge, Alert). No backend, all data is mocked
-and async is simulated with fake latency.
+Button, Input, Label, Select, Badge, Alert). No backend, all data is
+mocked and async is simulated with fake latency.
 
 ## Seeing all the states
 

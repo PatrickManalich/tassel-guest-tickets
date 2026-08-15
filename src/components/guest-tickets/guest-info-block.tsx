@@ -1,7 +1,10 @@
+import type { Relationship } from "@/types/guest-tickets"
+
 interface GuestInfoBlockProps {
   guest: {
     name: string
     email: string | null
+    relationship: Relationship | null
   }
 }
 
@@ -9,6 +12,7 @@ export function GuestInfoBlock({ guest }: GuestInfoBlockProps) {
   return (
     <div className="text-sm">
       <p className="font-medium text-foreground">{guest.name}</p>
+      <p className="text-muted-foreground">{guest.relationship ?? "No relationship provided"}</p>
       <p className="text-muted-foreground">{guest.email ?? "No email provided"}</p>
     </div>
   )

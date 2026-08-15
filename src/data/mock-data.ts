@@ -13,6 +13,6 @@ export const mockAllotment: Allotment = {
 }
 
 export const mockGuests: Guest[] = [
-  { id: "g1", name: "Maria Delgado", email: "maria@example.com" },
-  { id: "g2", name: "James Okafor", email: null },
+  { id: "g1", name: "Maria Delgado", email: "maria@example.com", relationship: "Mother" },
+  { id: "g2", name: "James Okafor", email: null, relationship: "Partner" },
 ]

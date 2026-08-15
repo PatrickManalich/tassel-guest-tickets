@@ -1,5 +1,5 @@
 import { useEffect, useId, useState, type FormEvent } from "react"
-import { Info } from "lucide-react"
+import { Info, Pencil } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
@@ -12,13 +12,22 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { GuestInfoBlock } from "@/components/guest-tickets/guest-info-block"
 import { InlineFormError } from "@/components/guest-tickets/inline-form-error"
 import { useVisualViewportMetrics } from "@/hooks/use-visual-viewport-metrics"
+import { RELATIONSHIP_OPTIONS, type Relationship } from "@/types/guest-tickets"
 
 export interface GuestFormValues {
   name: string
   email: string
+  relationship: Relationship | null
 }
 
 interface GuestFormDialogProps {
@@ -31,7 +40,7 @@ interface GuestFormDialogProps {
   errorTitle: string
   errorDescription?: string
   /** Reassign only: the guest currently holding this ticket, shown read-only above the fields. */
-  currentGuest?: { name: string; email: string | null }
+  currentGuest?: { name: string; email: string | null; relationship: Relationship | null }
   /**
    * Forwarded to Radix's DialogContent. This dialog is fully controlled with
    * no <DialogTrigger>, and Radix's own "return focus to trigger" default
@@ -63,6 +72,7 @@ export function GuestFormDialog({
   onCloseAutoFocus,
 }: GuestFormDialogProps) {
   const nameId = useId()
+  const relationshipId = useId()
   const emailId = useId()
   const emailErrorId = useId()
   const emailHintId = useId()
@@ -89,6 +99,7 @@ export function GuestFormDialog({
   }
 
   const [name, setName] = useState("")
+  const [relationship, setRelationship] = useState<Relationship | "">("")
   const [email, setEmail] = useState("")
   const [emailTouched, setEmailTouched] = useState(false)
   const [submitAttempted, setSubmitAttempted] = useState(false)
@@ -101,6 +112,7 @@ export function GuestFormDialog({
   useEffect(() => {
     if (open) {
       setName("")
+      setRelationship("")
       setEmail("")
       setEmailTouched(false)
       setSubmitAttempted(false)
@@ -132,7 +144,7 @@ export function GuestFormDialog({
 
     setSubmitting(true)
     try {
-      await onSubmit({ name, email })
+      await onSubmit({ name, email, relationship: relationship || null })
       onOpenChange(false)
     } catch {
       setHasError(true)
@@ -172,6 +184,25 @@ export function GuestFormDialog({
           </div>
 
           <div className="space-y-1.5">
+            <Label htmlFor={relationshipId}>Relationship</Label>
+            <Select
+              value={relationship}
+              onValueChange={(value) => setRelationship(value as Relationship)}
+            >
+              <SelectTrigger id={relationshipId} className="h-11">
+                <SelectValue placeholder="Select relationship" />
+              </SelectTrigger>
+              <SelectContent>
+                {RELATIONSHIP_OPTIONS.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
             <Label htmlFor={emailId}>Email</Label>
             <Input
               id={emailId}
@@ -196,6 +227,21 @@ export function GuestFormDialog({
               </AlertDescription>
             </Alert>
           </div>
+
+          {/*
+            Wireframe placeholder only — not a real preview. Stands in for
+            where an email preview/edit feature would eventually live; the
+            pencil icon is decorative and does nothing on click.
+          */}
+          {email.length > 0 ? (
+            <div
+              aria-hidden="true"
+              className="relative flex min-h-32 items-center justify-center rounded-lg bg-muted p-6 text-center"
+            >
+              <Pencil className="absolute top-2 right-2 size-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Placeholder Preview</span>
+            </div>
+          ) : null}
 
           {hasError ? (
             <InlineFormError title={errorTitle} description={errorDescription} />

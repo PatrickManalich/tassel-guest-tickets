@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import type { Allotment, Ceremony, Guest } from "@/types/guest-tickets"
+import type { Allotment, Ceremony, Guest, Relationship } from "@/types/guest-tickets"
 import { mockAllotment, mockCeremony, mockGuests } from "@/data/mock-data"
 
 export type ScreenState = "loading" | "empty" | "populated" | "full"
@@ -7,6 +7,7 @@ export type ScreenState = "loading" | "empty" | "populated" | "full"
 export interface GuestInput {
   name: string
   email: string
+  relationship: Relationship | null
 }
 
 const INITIAL_LOAD_DELAY_MS = 700
@@ -70,7 +71,12 @@ export function useGuestTickets(): UseGuestTicketsResult {
       runAction(() => {
         setGuests((prev) => [
           ...prev,
-          { id: crypto.randomUUID(), name: input.name.trim(), email: input.email.trim() || null },
+          {
+            id: crypto.randomUUID(),
+            name: input.name.trim(),
+            email: input.email.trim() || null,
+            relationship: input.relationship,
+          },
         ])
       }),
     [runAction],
@@ -82,7 +88,12 @@ export function useGuestTickets(): UseGuestTicketsResult {
         setGuests((prev) =>
           prev.map((guest) =>
             guest.id === guestId
-              ? { ...guest, name: input.name.trim(), email: input.email.trim() || null }
+              ? {
+                  ...guest,
+                  name: input.name.trim(),
+                  email: input.email.trim() || null,
+                  relationship: input.relationship,
+                }
               : guest,
           ),
         )

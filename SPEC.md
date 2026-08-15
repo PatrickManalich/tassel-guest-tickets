@@ -33,9 +33,13 @@ What to send back:
 ```ts
 interface Ceremony { school: string; name: string; date: string; venue: string }
 interface Allotment { total: number; claimed: number }
-interface Guest { id: string; name: string; email: string | null }
+interface Guest { id: string; name: string; email: string | null; relationship: Relationship | null }
+type Relationship = "Mother" | "Father" | "Guardian" | "Grandmother" | "Grandfather" |
+  "Sibling" | "Partner" | "Aunt" | "Uncle" | "Cousin" | "Child" | "Friend" | "Other"
 ```
 `claimed` matches the field name in the source `mock-data.json`, and the UI's display copy uses the same word (see Allotment display below) — no split between the data contract and front-end wording.
+
+`relationship` was added later, from interview feedback, as a small addition on top of the finished build — not required, no asterisk, defaults to an unselected placeholder ("Select relationship") rather than pre-picking a value. It sits in the dialog between Name and Email (both are static "who is this person" fields; Email is the one that can trigger a notification). It's shown everywhere name/email already appear together — guest rows and the reassign/remove read-only info block — as a third line between them ("No relationship provided" when unset, same muted-foreground treatment as "No email provided").
 
 ## Screen states
 - Loading — initial fetch
@@ -57,20 +61,23 @@ fail (inline error stays inside the dialog, entered data kept, Save re-enabled f
 - White toolbar, page title "Manage guest tickets", no back button (screen is scoped as if embedded in a larger app — state this assumption in the write-up)
 - Gray page background, white raised cards (ceremony, allotment, guest list) — base/raised surface pattern
 - Ceremony card: school, ceremony name, calendar icon + date, pin icon + venue. No cap/building icons, no per-school logo (keeps the pattern generalizable across every school Tassel serves)
-- Guest rows: name, email or "No email provided", two text-labeled actions — "Reassign" and "Remove" (icon-only for remove is fine, reassign needs the word since a pencil icon would contradict the label)
+- Guest rows: name, relationship or "No relationship provided", email or "No email provided", two text-labeled actions — "Reassign" and "Remove" (icon-only for remove is fine, reassign needs the word since a pencil icon would contradict the label)
 - Bottom sticky full-width "Add guest" button, the one unambiguous primary trigger. Disabled + a nearby reason when full, not just grayed out with no explanation
 - No ghost "available" rows in the guest list
 - No search bar — five guests is small enough to scan at a glance
 
 ## Dialogs
 **Add guest** — centered Dialog (not a bottom sheet — trigger can originate from the bottom button or any open slot circle, a sheet reads disconnected from a mid-screen tap)
-- Title "Add guest" · Name* required, blank · Email optional, blank
-- Placeholders: "Enter first and last name" / "Enter email address"
+- Title "Add guest" · Name* required, blank · Relationship optional, unselected · Email optional, blank
+- Field order: Name, Relationship, Email — Relationship sits with Name since both are static "who is this person" fields
+- Placeholders: "Enter first and last name" / "Select relationship" / "Enter email address"
 - Save disabled until name is non-empty
+- Below Email, a blue info note explains guests with an email get their ticket and instructions by email
+- Below that, the moment any character is typed into Email: a placeholder-only gray block reading "Placeholder Preview" with a decorative, non-functional pencil icon top-right — a wireframe stand-in for a future preview/edit feature, not a real one. No template, no field substitution, no backend. Added from interview feedback alongside Relationship; intentionally left unfinished-looking rather than half-built
 
 **Reassign guest** — same Dialog shell as Add
 - Title "Reassign guest" · read-only info block above the fields (current guest's name + email, plain text, no border, no label)
-- Name/Email fields blank, not prefilled
+- Name/Relationship/Email fields blank, not prefilled — Relationship never pre-picks a value, even if the current guest already has one on file
 - Button reads "Reassign", not "Save"
 
 **Remove guest** — AlertDialog, not Dialog (forces an explicit choice, no accidental dismiss)

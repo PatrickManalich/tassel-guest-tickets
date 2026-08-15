@@ -48,6 +48,9 @@ export function GuestRow({
             <div className="min-w-0">
               <p className="truncate text-sm font-medium text-foreground">{guest.name}</p>
               <p className="truncate text-sm text-muted-foreground">
+                {guest.relationship ?? "No relationship provided"}
+              </p>
+              <p className="truncate text-sm text-muted-foreground">
                 {guest.email ?? "No email provided"}
               </p>
             </div>
